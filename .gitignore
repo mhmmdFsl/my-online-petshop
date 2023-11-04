@@ -19,3 +19,8 @@
 
 # Go workspace file
 go.work
+
+.idea
+.vscode
+gql-gateway/node_modules
+*.iml

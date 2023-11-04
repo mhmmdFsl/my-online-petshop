@@ -1,0 +1,14 @@
+<nav class="py-2 bg-light border-bottom">
+  <div class="container d-flex flex-wrap">
+    <ul class="nav me-auto">
+      <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+    </ul>
+    <ul class="nav">
+      <li *ngIf="!isLogin" class="nav-item"><a href="/login" class="nav-link link-dark px-2">Login</a></li>
+      <li *ngIf="!isLogin" class="nav-item"><a href="/sign-up" class="nav-link link-dark px-2">Sign up</a></li>
+      <li *ngIf="isLogin" class="nav-item"><a href="/logout" class="nav-link link-dark px-2" (click)="onLogout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
