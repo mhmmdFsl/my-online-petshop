@@ -6,27 +6,44 @@ package graph
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"github.com/mhmmdFsl/my-online-petshop/pet-product/graph/model"
 )
 
 // CreateProduct is the resolver for the createProduct field.
 func (r *mutationResolver) CreateProduct(ctx context.Context, input model.NewProduct) (*model.Product, error) {
-	return &model.Product{
-		ID:        "1",
-		Name:      "Sample Product",
-		Price:     10000,
-		ImageURL:  "http:/localhost:8080/123",
-		CreatedAt: time.Now().Format(time.RFC3339),
-		UpdatedAt: time.Now().Format(time.RFC3339),
-	}, nil
+	p, err := r.ProductService.Create(&input)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
+// DeleteProduct is the resolver for the deleteProduct field.
+func (r *mutationResolver) DeleteProduct(ctx context.Context, id string) (string, error) {
+	s, err := r.ProductService.Delete(id)
+	if err != nil {
+		return "", err
+	}
+	return s, nil
+}
+
+// UpdateProduct is the resolver for the updateProduct field.
+func (r *mutationResolver) UpdateProduct(ctx context.Context, input *model.UpdateProduct) (*model.Product, error) {
+	p, err := r.ProductService.UpdateProduct(input)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }
 
 // Products is the resolver for the products field.
 func (r *queryResolver) Products(ctx context.Context) ([]*model.Product, error) {
-	panic(fmt.Errorf("not implemented: Products - products"))
+	p, err := r.ProductService.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }
 
 // Mutation returns MutationResolver implementation.

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit{
           this.storageService.saveRefreshToken(n['data']['refreshToken'])
         },
         error: (e) => this.error = e['error']['message'],
-        complete: () => this.router.navigate(['/home'])
+        complete: () => this.router.navigate([''])
       })
   }
 

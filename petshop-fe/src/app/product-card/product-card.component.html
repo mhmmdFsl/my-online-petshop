@@ -1,0 +1,15 @@
+
+      <div class="col">
+        <div class="card h-100 shadow-sm" style="width: 18rem;">
+          <img src="{{imageUrl}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <div class="clearfix mb-3">
+              <span class="float-start">{{product.name}}</span>
+              <span class="float-end price-hp">Rp. {{product.price}}</span>
+            </div>
+            <div class="text-center my-4">
+              <button type="button" class="btn btn-warning" (click)="order()">Pesan</button>
+            </div>
+          </div>
+        </div>
+      </div>

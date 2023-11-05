@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/mhmmdFsl/my-online-petshop/pet-product/config"
+	"github.com/mhmmdFsl/my-online-petshop/pet-product/service"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +20,13 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	productService := service.NewProductService(&service.ProductServiceCfg{
+		Collection: config.Collecion,
+	})
+
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+		ProductService: productService,
+	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

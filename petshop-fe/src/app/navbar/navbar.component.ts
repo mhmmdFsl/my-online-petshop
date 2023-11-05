@@ -25,6 +25,6 @@ export class NavbarComponent implements OnInit {
 
   onLogout() {
     this.storageService.clean();
-    this.router.navigate(['login'])
+    this.router.navigateByUrl('')
   }
 }

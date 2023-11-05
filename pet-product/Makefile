@@ -1,6 +1,6 @@
 .PHONY: clean test security build run
 
-APP_NAME = auth-server
+APP_NAME = pet-product
 BUILD_DIR = $(PWD)/build
 MIGRATIONS_FOLDER = $(PWD)/db/migrations/
 DATABASE_URL = postgres://postgres:secret@localhost:5433/postgres?sslmode=disable
@@ -21,16 +21,7 @@ build: clean test
 run: swag build
 	$(BUILD_DIR)/$(APP_NAME)
 
-migrate.up:
-	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" up
-
-migrate.down:
-	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" down
-
-migrate.force:
-	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" force $(version)
-
-docker.run: docker.network docker.postgres swag docker.fiber migrate.up
+docker.run: docker.network swag docker.fiber
 
 docker.network:
 	docker network inspect dev-network >/dev/null 2>&1 || \
@@ -51,25 +42,18 @@ docker.fiber.host: docker.fiber.build
 		--name dev-fiber \
 		--network host \
 		fiber
-
-docker.postgres:
+		
+docker.mongo:
 	docker run --rm -d \
-		--name dev-postgres \
+		--name dev-mongo \
 		--network dev-network \
-		-e POSTGRES_USER=postgres \
-		-e POSTGRES_PASSWORD=secret \
-		-e POSTGRES_DB=postgres \
-		-v ${HOME}/dev-postgres/data/:/var/lib/postgresql/data \
-		-p 5432:5432 \
-		postgres
+		-p 27017:27017 \
+		mongo
 
 docker.stop: docker.stop.fiber docker.stop.postgres
 
 docker.stop.fiber:
 	docker stop dev-fiber
-
-docker.stop.postgres:
-	docker stop dev-postgres
 
 swag:
 	swag init

@@ -10,6 +10,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ProductCardComponent } from './product-card/product-card.component';
+import { GraphQLModule } from './graphql.module';
+import {APOLLO_OPTIONS} from "apollo-angular";
+import {HttpLink} from "apollo-angular/http";
+import {InMemoryCache} from "@apollo/client/core";
+import {ProductContainerComponent} from "./product-container/product-container.component";
 
 @NgModule({
   declarations: [
@@ -19,15 +25,31 @@ import { NavbarComponent } from './navbar/navbar.component';
     SignUpComponent,
     HomeComponent,
     NavbarComponent,
+    ProductCardComponent,
+    ProductContainerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    GraphQLModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory(httpLink: HttpLink) {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: 'http://localhost:4000',
+          }),
+        };
+      },
+      deps: [HttpLink]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

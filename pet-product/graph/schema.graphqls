@@ -23,4 +23,13 @@ input NewProduct {
 
 type Mutation {
   createProduct(input: NewProduct!): Product!
+  deleteProduct(id: String!): String!
+  updateProduct(input: UpdateProduct): Product!
+}
+
+input UpdateProduct {
+  id: ID!
+  name: String!
+  price: Int
+  imageUrl: String
 }

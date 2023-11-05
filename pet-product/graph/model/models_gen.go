@@ -16,3 +16,10 @@ type Product struct {
 	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
 }
+
+type UpdateProduct struct {
+	ID       string  `json:"id"`
+	Name     string  `json:"name"`
+	Price    *int    `json:"price,omitempty"`
+	ImageURL *string `json:"imageUrl,omitempty"`
+}
