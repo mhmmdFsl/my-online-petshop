@@ -1,122 +1,80 @@
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
-
-                <form class="mx-1 mx-md-4" [formGroup]="form" (ngSubmit)="onSubmit()">
-
-                  <div class="alert alert-danger" role="alert" *ngIf="error && submited">
-                    {{error}}
+<!-- source:https://codepen.io/owaiswiz/pen/jOPvEPB -->
+<div class="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+  <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+      <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+          <div class="mt-12 flex flex-col items-center">
+              <h1 class="text-2xl xl:text-3xl font-extrabold">
+                  Login
+              </h1>
+              <div class="w-full flex-1 mt-8">
+                  <div class="flex flex-col items-center">
+                      <button
+                          class="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
+                          <div class="bg-white p-2 rounded-full">
+                              <svg class="w-4" viewBox="0 0 533.5 544.3">
+                                  <path
+                                      d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
+                                      fill="#4285f4" />
+                                  <path
+                                      d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
+                                      fill="#34a853" />
+                                  <path
+                                      d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
+                                      fill="#fbbc04" />
+                                  <path
+                                      d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
+                                      fill="#ea4335" />
+                              </svg>
+                          </div>
+                          <span class="ml-4">
+                              Login with Google
+                          </span>
+                      </button>
                   </div>
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="principal"  formControlName="principal" class="form-control" [class.is-invalid]="f['principal'].errors && submited" placeholder="Email or Phone Number"/>
-                      <div class="invalid-feedback">
-                        Email or Phone required.
+
+                  <div class="my-12 border-b text-center">
+                      <div
+                          class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                          Or Login with e-mail
                       </div>
+                  </div>
+
+                  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div *ngIf="error" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                      <span class="font-medium">{{error}}</span>.
                     </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="password" id="password" formControlName="password" class="form-control" [class.is-invalid]="f['password'].errors && submited" placeholder="Password"/>
-                      <div class="invalid-feedback">
-                        Password required.
-                      </div>
+                    <div class="mx-auto max-w-xs">
+                        <input
+                            class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                            type="text" id="principal" formControlName="principal" placeholder="Email" />
+                        <input
+                            class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                            type="password" id="password" formControlName="password" placeholder="Password" />
+                        <button
+                            class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                            <span class="ml-3">
+                                Login
+                            </span>
+                        </button>
+                        <p class="mt-6 text-xs text-gray-600 text-center">
+                            I agree to abide by templatana's
+                            <a href="#" class="border-b border-gray-500 border-dotted">
+                                Terms of Service
+                            </a>
+                            and its
+                            <a href="#" class="border-b border-gray-500 border-dotted">
+                                Privacy Policy
+                            </a>
+                        </p>
                     </div>
-                  </div>
-
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
-                  </div>
-
-                </form>
-
+                  </form>
               </div>
-
-              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                     class="img-fluid" alt="Sample image">
-              </div>
-            </div>
           </div>
-        </div>
       </div>
-    </div>
+      <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
+          <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
+              style="background-image: url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg');">
+          </div>
+      </div>
   </div>
-</section>
-
-
-<!--<section class="vh-100" style="background-color: #eee;">-->
-<!--  <div class="container-fluid h-custom">-->
-<!--    <div class="row d-flex justify-content-center align-items-center h-100">-->
-<!--      <div class="col-md-9 col-lg-6 col-xl-5">-->
-<!--        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"-->
-<!--             class="img-fluid" alt="Sample image">-->
-<!--      </div>-->
-<!--      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">-->
-<!--        <form>-->
-<!--          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">-->
-<!--            <p class="lead fw-normal mb-0 me-3">Sign in with</p>-->
-<!--            <button type="button" class="btn btn-primary btn-floating mx-1">-->
-<!--              <i class="fab fa-facebook-f"></i>-->
-<!--            </button>-->
-
-<!--            <button type="button" class="btn btn-primary btn-floating mx-1">-->
-<!--              <i class="fab fa-twitter"></i>-->
-<!--            </button>-->
-
-<!--            <button type="button" class="btn btn-primary btn-floating mx-1">-->
-<!--              <i class="fab fa-linkedin-in"></i>-->
-<!--            </button>-->
-<!--          </div>-->
-
-<!--          <div class="divider d-flex align-items-center my-4">-->
-<!--            <p class="text-center fw-bold mx-3 mb-0">Or</p>-->
-<!--          </div>-->
-
-<!--          &lt;!&ndash; Email input &ndash;&gt;-->
-<!--          <div class="form-outline mb-4">-->
-<!--            <input type="email" id="form3Example3" class="form-control form-control-lg"-->
-<!--                   placeholder="Enter a valid email address" />-->
-<!--            <label class="form-label" for="form3Example3">Email address</label>-->
-<!--          </div>-->
-
-<!--          &lt;!&ndash; Password input &ndash;&gt;-->
-<!--          <div class="form-outline mb-3">-->
-<!--            <input type="password" id="form3Example4" class="form-control form-control-lg"-->
-<!--                   placeholder="Enter password" />-->
-<!--            <label class="form-label" for="form3Example4">Password</label>-->
-<!--          </div>-->
-
-<!--          <div class="d-flex justify-content-between align-items-center">-->
-<!--            &lt;!&ndash; Checkbox &ndash;&gt;-->
-<!--            <div class="form-check mb-0">-->
-<!--              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />-->
-<!--              <label class="form-check-label" for="form2Example3">-->
-<!--                Remember me-->
-<!--              </label>-->
-<!--            </div>-->
-<!--            <a href="#!" class="text-body">Forgot password?</a>-->
-<!--          </div>-->
-
-<!--          <div class="text-center text-lg-start mt-4 pt-2">-->
-<!--            <button type="button" class="btn btn-primary btn-lg"-->
-<!--                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>-->
-<!--            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"-->
-<!--                                                                              class="link-danger">Register</a></p>-->
-<!--          </div>-->
-
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</section>-->
+</div>

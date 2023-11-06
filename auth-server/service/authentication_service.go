@@ -5,9 +5,10 @@ import (
 	"auth-server/model/http_error"
 	"auth-server/repository"
 	"auth-server/util"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService interface {
@@ -24,6 +25,9 @@ type authServiceImpl struct {
 
 func (a authServiceImpl) Login(rq *model.LoginRq) (*model.LoginRs, error) {
 	user, err := a.UserRepo.FindByPrincipal(rq.Principal)
+	if err != nil {
+		return nil, http_error.NewFailed("User not registered.", 400)
+	}
 	hashedPassword := []byte(user.PasswordUser.HashPassword)
 	password := []byte(rq.Password)
 	if err != nil {
