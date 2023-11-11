@@ -3,7 +3,7 @@ package model
 import "time"
 
 type User struct {
-	Id            int           `json:"id" gorm:"primaryKey"`
+	Id            int           `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name          string        `json:"name"`
 	Status        string        `json:"status"`
 	CreatedAt     time.Time     `json:"createdAt"`
@@ -13,14 +13,14 @@ type User struct {
 }
 
 type PasswordUser struct {
-	Id           int       `json:"id" gorm:"primaryKey"`
+	Id           int       `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserId       int       `json:"userId"`
 	HashPassword string    `json:"hashPassword"`
 	CreatedAt    time.Time `json:"createdAt"`
 }
 
 type PrincipalUser struct {
-	Id             int       `json:"id" gorm:"primaryKey"`
+	Id             int       `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserId         int       `json:"userId"`
 	PrincipalType  string    `json:"principalType"`
 	PrincipalValue string    `json:"principalValue"`
@@ -30,7 +30,7 @@ type PrincipalUser struct {
 }
 
 type UserRefreshToken struct {
-	Id           int       `json:"id" gorm:"primaryKey"`
+	Id           int       `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserId       int       `json:"userId"`
 	RefreshToken string    `json:"refreshToken"`
 	CreatedAt    time.Time `json:"createdAt"`

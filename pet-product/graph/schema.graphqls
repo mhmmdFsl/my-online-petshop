@@ -7,18 +7,25 @@ type Product {
   name: String!
   price: Int!
   imageUrl: String!
+  slug: String!
   createdAt: String!
   updatedAt: String!
 }
 
 type Query {
-  products: [Product]!
+  products(input: ProductFilter): [Product]!
 }
 
 input NewProduct {
   name: String!
   price: Int!
   imageUrl: String!
+}
+
+input ProductFilter {
+    name: String
+    slug: String
+    limit: Int! = 10
 }
 
 type Mutation {

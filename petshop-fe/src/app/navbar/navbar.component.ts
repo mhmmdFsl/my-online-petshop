@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {StorageService} from "../storage.service";
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,8 +10,14 @@ import {StorageService} from "../storage.service";
 })
 export class NavbarComponent implements OnInit {
   isLogin: boolean = false;
+  isDropdown: boolean = false;
+  searchValue: string = ''
 
-  constructor(private router: Router, private storageService: StorageService) {
+  constructor(
+    private router: Router, 
+    private storageService: StorageService,
+    private productService: ProductService
+  ) {
     // Listen for route changes
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -26,5 +33,13 @@ export class NavbarComponent implements OnInit {
   onLogout() {
     this.storageService.clean();
     this.router.navigateByUrl('')
+  }
+
+  dropDown() {
+    this.isDropdown = !this.isDropdown
+  }
+
+  search() {
+    this.productService.setName(this.searchValue)
   }
 }

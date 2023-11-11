@@ -38,8 +38,8 @@ func (r *mutationResolver) UpdateProduct(ctx context.Context, input *model.Updat
 }
 
 // Products is the resolver for the products field.
-func (r *queryResolver) Products(ctx context.Context) ([]*model.Product, error) {
-	p, err := r.ProductService.GetAll()
+func (r *queryResolver) Products(ctx context.Context, input *model.ProductFilter) ([]*model.Product, error) {
+	p, err := r.ProductService.GetAll(input)
 	if err != nil {
 		return nil, err
 	}

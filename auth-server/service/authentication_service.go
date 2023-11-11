@@ -82,7 +82,6 @@ func (a authServiceImpl) SignUp(rq *model.SignUpRq) error {
 	}
 
 	u := model.User{
-		Id:        1,
 		Name:      rq.Name,
 		Status:    "ACTIVE",
 		CreatedAt: time.Time{},

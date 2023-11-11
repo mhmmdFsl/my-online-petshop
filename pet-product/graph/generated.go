@@ -60,11 +60,12 @@ type ComplexityRoot struct {
 		ImageURL  func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Price     func(childComplexity int) int
+		Slug      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 	}
 
 	Query struct {
-		Products           func(childComplexity int) int
+		Products           func(childComplexity int, input *model.ProductFilter) int
 		__resolve__service func(childComplexity int) int
 	}
 
@@ -79,7 +80,7 @@ type MutationResolver interface {
 	UpdateProduct(ctx context.Context, input *model.UpdateProduct) (*model.Product, error)
 }
 type QueryResolver interface {
-	Products(ctx context.Context) ([]*model.Product, error)
+	Products(ctx context.Context, input *model.ProductFilter) ([]*model.Product, error)
 }
 
 type executableSchema struct {
@@ -172,6 +173,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Product.Price(childComplexity), true
 
+	case "Product.slug":
+		if e.complexity.Product.Slug == nil {
+			break
+		}
+
+		return e.complexity.Product.Slug(childComplexity), true
+
 	case "Product.updatedAt":
 		if e.complexity.Product.UpdatedAt == nil {
 			break
@@ -184,7 +192,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.Products(childComplexity), true
+		args, err := ec.field_Query_products_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Products(childComplexity, args["input"].(*model.ProductFilter)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -209,6 +222,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputNewProduct,
+		ec.unmarshalInputProductFilter,
 		ec.unmarshalInputUpdateProduct,
 	)
 	first := true
@@ -404,6 +418,21 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_products_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *model.ProductFilter
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOProductFilter2ᚖgithubᚗcomᚋmhmmdFslᚋmyᚑonlineᚑpetshopᚋpetᚑproductᚋgraphᚋmodelᚐProductFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field___Type_enumValues_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -489,6 +518,8 @@ func (ec *executionContext) fieldContext_Mutation_createProduct(ctx context.Cont
 				return ec.fieldContext_Product_price(ctx, field)
 			case "imageUrl":
 				return ec.fieldContext_Product_imageUrl(ctx, field)
+			case "slug":
+				return ec.fieldContext_Product_slug(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Product_createdAt(ctx, field)
 			case "updatedAt":
@@ -613,6 +644,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProduct(ctx context.Cont
 				return ec.fieldContext_Product_price(ctx, field)
 			case "imageUrl":
 				return ec.fieldContext_Product_imageUrl(ctx, field)
+			case "slug":
+				return ec.fieldContext_Product_slug(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Product_createdAt(ctx, field)
 			case "updatedAt":
@@ -811,6 +844,50 @@ func (ec *executionContext) fieldContext_Product_imageUrl(ctx context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _Product_slug(ctx context.Context, field graphql.CollectedField, obj *model.Product) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Product_slug(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Slug, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Product_slug(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Product",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Product_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_createdAt(ctx, field)
 	if err != nil {
@@ -913,7 +990,7 @@ func (ec *executionContext) _Query_products(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Products(rctx)
+		return ec.resolvers.Query().Products(rctx, fc.Args["input"].(*model.ProductFilter))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -946,6 +1023,8 @@ func (ec *executionContext) fieldContext_Query_products(ctx context.Context, fie
 				return ec.fieldContext_Product_price(ctx, field)
 			case "imageUrl":
 				return ec.fieldContext_Product_imageUrl(ctx, field)
+			case "slug":
+				return ec.fieldContext_Product_slug(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Product_createdAt(ctx, field)
 			case "updatedAt":
@@ -953,6 +1032,17 @@ func (ec *executionContext) fieldContext_Query_products(ctx context.Context, fie
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_products_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -2995,6 +3085,57 @@ func (ec *executionContext) unmarshalInputNewProduct(ctx context.Context, obj in
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputProductFilter(ctx context.Context, obj interface{}) (model.ProductFilter, error) {
+	var it model.ProductFilter
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["limit"]; !present {
+		asMap["limit"] = 10
+	}
+
+	fieldsInOrder := [...]string{"name", "slug", "limit"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "slug":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("slug"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Slug = data
+		case "limit":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateProduct(ctx context.Context, obj interface{}) (model.UpdateProduct, error) {
 	var it model.UpdateProduct
 	asMap := map[string]interface{}{}
@@ -3150,6 +3291,11 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "imageUrl":
 			out.Values[i] = ec._Product_imageUrl(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "slug":
+			out.Values[i] = ec._Product_slug(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -4078,6 +4224,14 @@ func (ec *executionContext) marshalOProduct2ᚖgithubᚗcomᚋmhmmdFslᚋmyᚑon
 		return graphql.Null
 	}
 	return ec._Product(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOProductFilter2ᚖgithubᚗcomᚋmhmmdFslᚋmyᚑonlineᚑpetshopᚋpetᚑproductᚋgraphᚋmodelᚐProductFilter(ctx context.Context, v interface{}) (*model.ProductFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputProductFilter(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

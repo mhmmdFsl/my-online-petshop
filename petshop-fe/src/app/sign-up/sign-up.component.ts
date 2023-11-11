@@ -39,7 +39,7 @@ export class SignUpComponent implements OnInit {
     return this.form.controls;
   }
 
-  signUp() {
+  onSubmit() {
     this.submited = true;
     const signUpRq: SignUpdRq = {
       name: this.form.value['name'],

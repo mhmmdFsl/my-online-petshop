@@ -13,8 +13,15 @@ type Product struct {
 	Name      string `json:"name"`
 	Price     int    `json:"price"`
 	ImageURL  string `json:"imageUrl"`
+	Slug      string `json:"slug"`
 	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
+}
+
+type ProductFilter struct {
+	Name  *string `json:"name,omitempty"`
+	Slug  *string `json:"slug,omitempty"`
+	Limit int     `json:"limit"`
 }
 
 type UpdateProduct struct {

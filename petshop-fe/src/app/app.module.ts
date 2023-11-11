@@ -16,6 +16,7 @@ import {APOLLO_OPTIONS} from "apollo-angular";
 import {HttpLink} from "apollo-angular/http";
 import {InMemoryCache} from "@apollo/client/core";
 import {ProductContainerComponent} from "./product-container/product-container.component";
+import {ProductPageComponent} from  "./product-page/product-page.component"
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {ProductContainerComponent} from "./product-container/product-container.c
     HomeComponent,
     NavbarComponent,
     ProductCardComponent,
-    ProductContainerComponent
+    ProductContainerComponent,
+    ProductPageComponent,
   ],
   imports: [
     BrowserModule,
