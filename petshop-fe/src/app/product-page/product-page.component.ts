@@ -15,7 +15,8 @@ export class ProductPageComponent implements OnInit {
     name: '',
     imageUrl: '',
     price: 0,
-    slug: ''
+    slug: '',
+    description: ''
   }
   
   constructor(

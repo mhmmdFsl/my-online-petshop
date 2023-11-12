@@ -12,6 +12,7 @@ const GET_PRODDUCT_QUERY = gql`
         imageUrl
         slug
         price
+        description
         createdAt
         updatedAt
       }

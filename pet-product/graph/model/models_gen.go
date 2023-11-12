@@ -3,25 +3,52 @@
 package model
 
 type NewProduct struct {
-	Name     string `json:"name"`
-	Price    int    `json:"price"`
-	ImageURL string `json:"imageUrl"`
+	Name        string `json:"name"`
+	Price       int    `json:"price"`
+	ImageURL    string `json:"imageUrl"`
+	Description string `json:"description"`
+}
+
+type NewShop struct {
+	Name      *string `json:"name,omitempty"`
+	UserID    *string `json:"userId,omitempty"`
+	LogoURL   *string `json:"logoUrl,omitempty"`
+	Status    *string `json:"status,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
 
 type Product struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Price     int    `json:"price"`
-	ImageURL  string `json:"imageUrl"`
-	Slug      string `json:"slug"`
-	CreatedAt string `json:"createdAt"`
-	UpdatedAt string `json:"updatedAt"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Price       int    `json:"price"`
+	ImageURL    string `json:"imageUrl"`
+	Slug        string `json:"slug"`
+	Description string `json:"description"`
+	CreatedAt   string `json:"createdAt"`
+	UpdatedAt   string `json:"updatedAt"`
+	Shop        *Shop  `json:"shop,omitempty"`
 }
 
 type ProductFilter struct {
 	Name  *string `json:"name,omitempty"`
 	Slug  *string `json:"slug,omitempty"`
 	Limit int     `json:"limit"`
+}
+
+type Shop struct {
+	ID         string   `json:"id"`
+	Name       string   `json:"name"`
+	LogoURL    string   `json:"logoUrl"`
+	IsVerified *bool    `json:"isVerified,omitempty"`
+	ProductID  []string `json:"productId,omitempty"`
+	Status     string   `json:"status"`
+	CreatedAt  string   `json:"createdAt"`
+	UpdatedAt  string   `json:"updatedAt"`
+}
+
+type ShopFilter struct {
+	Limit int `json:"limit"`
 }
 
 type UpdateProduct struct {

@@ -8,7 +8,7 @@ import {Product} from "../product.interface";
 })
 export class ProductCardComponent {
   
-  @Input() product: Product = {name:'', price: 0, imageUrl:'', slug: ''}
+  @Input() product: Product = {name:'', price: 0, imageUrl:'', slug: '', description: ''}
   name: string = 'Sample Product';
   price: Number = 10000;
   imageUrl: string = 'https://singpet.id/media/catalog/product/cache/5c4104efd38f87733e130c561cbe6e7b/R/o/Royal-Canin-Maine-Coon-Adult-Cat-4kg-C103-02-000104.jpg'

@@ -2,36 +2,69 @@
 #
 # https://gqlgen.com/getting-started/
 
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3",
+        import: ["@inaccessible"])
+
 type Product {
   id: ID!
   name: String!
   price: Int!
   imageUrl: String!
   slug: String!
+  description: String!
   createdAt: String!
   updatedAt: String!
+  shop: Shop
 }
 
 type Query {
   products(input: ProductFilter): [Product]!
+  shops(input: ShopFilter): [Shop]!
+}
+
+input ShopFilter {
+  limit: Int!
+}
+
+type Shop {
+  id: ID!
+  name: String!
+  logoUrl: String!
+  isVerified: Boolean
+  productId: [String!] @inaccessible
+  status: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 input NewProduct {
   name: String!
   price: Int!
   imageUrl: String!
+  description: String!
 }
 
 input ProductFilter {
-    name: String
-    slug: String
-    limit: Int! = 10
+  name: String
+  slug: String
+  limit: Int! = 10
 }
 
 type Mutation {
   createProduct(input: NewProduct!): Product!
   deleteProduct(id: String!): String!
   updateProduct(input: UpdateProduct): Product!
+  createShop(input: NewShop): Shop
+}
+
+input NewShop {
+  name: String
+  userId: String
+  logoUrl: String
+  status: String
+  createdAt: String
+  updatedAt: String
 }
 
 input UpdateProduct {

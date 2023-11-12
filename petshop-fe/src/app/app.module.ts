@@ -17,6 +17,11 @@ import {HttpLink} from "apollo-angular/http";
 import {InMemoryCache} from "@apollo/client/core";
 import {ProductContainerComponent} from "./product-container/product-container.component";
 import {ProductPageComponent} from  "./product-page/product-page.component"
+import { ShopDashboardComponent } from './shop-dashboard/shop-dashboard.component';
+import { ShopProductComponent } from './shop-product/shop-product.component';
+import { AddProductComponent } from './add-product/add-product.component';
+import { NgxEditorModule } from 'ngx-editor';
+import { ShopComponent } from './shop/shop.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +34,10 @@ import {ProductPageComponent} from  "./product-page/product-page.component"
     ProductCardComponent,
     ProductContainerComponent,
     ProductPageComponent,
+    ShopDashboardComponent,
+    ShopProductComponent,
+    AddProductComponent,
+    ShopComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +45,8 @@ import {ProductPageComponent} from  "./product-page/product-page.component"
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    GraphQLModule
+    GraphQLModule,
+    NgxEditorModule
   ],
   providers: [
     {

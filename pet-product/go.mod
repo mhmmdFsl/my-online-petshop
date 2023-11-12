@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/99designs/gqlgen v0.17.40
 	github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48
+	github.com/graph-gophers/dataloader/v7 v7.1.0
 	github.com/vektah/gqlparser/v2 v2.5.10
 	go.mongodb.org/mongo-driver v1.12.1
 )

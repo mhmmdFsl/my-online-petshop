@@ -24,3 +24,5 @@ go.work
 .vscode
 gql-gateway/node_modules
 *.iml
+
+.node_modules

@@ -109,6 +109,7 @@ func (p productServiceImpl) Create(m *model.NewProduct) (*model.Product, error) 
 		Price:     m.Price,
 		ImageURL:  m.ImageURL,
 		Slug: strings.ReplaceAll(strings.ToLower(m.Name), " ", "-"),
+		Description: m.Description,
 		CreatedAt: time.Now().Format(time.RFC3339Nano),
 		UpdatedAt: time.Now().Format(time.RFC3339Nano),
 	}
