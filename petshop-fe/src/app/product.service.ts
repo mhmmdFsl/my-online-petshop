@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Apollo, QueryRef} from "apollo-angular";
 import {gql} from "@apollo/client/core";
-import { Observable, Subject, Subscription, of } from 'rxjs';
-import { Product } from './product.interface';
+import { CreateShopRq } from './create-shop-rq.interface';
 
 const GET_PRODDUCT_QUERY = gql`
   query Query($input: ProductFilter) {
@@ -14,6 +13,35 @@ const GET_PRODDUCT_QUERY = gql`
         price
         description
         createdAt
+        updatedAt
+      }
+    }
+  `
+
+  const GET_SHOP_QUERY = gql`
+  query Query($input: ShopFilter) {
+      shops(input: $input) {
+        id
+        userId
+        name
+        logoUrl
+        isVerified
+        status
+        createdAt
+        updatedAt
+      }
+    }
+  `
+
+  const CREATE_SHOP_QUERY = gql`
+    mutation Mutation($input: NewShop) {
+      createShop(input: $input) {
+        id
+        name
+        logoUrl
+        isVerified
+        status
+        userId
         updatedAt
       }
     }
@@ -61,5 +89,33 @@ export class ProductService {
         }
       }
     })
+  }
+
+  getShop(userId: string) {
+    return this.apollo
+    .watchQuery({
+      query: GET_SHOP_QUERY,
+      variables: {
+        input: {
+          limit: 10,
+          userId: userId
+        }
+      }
+    })
+  }
+
+  createShop(createShopRq: CreateShopRq) {
+    console.log(createShopRq)
+    return this.apollo
+      .mutate({
+        mutation: CREATE_SHOP_QUERY,
+        variables: {
+          input: {
+            name: createShopRq.name,
+            logoUrl: createShopRq.logoUrl,
+            userId: createShopRq.userId
+          }
+        }
+      })
   }
 }

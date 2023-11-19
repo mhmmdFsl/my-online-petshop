@@ -11,4 +11,5 @@ import (
 
 type Resolver struct {
 	ProductService service.ProductService
+	ShopService    service.ShopService
 }

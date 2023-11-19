@@ -24,14 +24,17 @@ type Query {
 }
 
 input ShopFilter {
+  name: String
+  userId: String
   limit: Int!
 }
 
 type Shop {
   id: ID!
+  userId: ID!
   name: String!
   logoUrl: String!
-  isVerified: Boolean
+  isVerified: Boolean!
   productId: [String!] @inaccessible
   status: String!
   createdAt: String!
@@ -59,12 +62,9 @@ type Mutation {
 }
 
 input NewShop {
-  name: String
-  userId: String
-  logoUrl: String
-  status: String
-  createdAt: String
-  updatedAt: String
+  name: String!
+  userId: String!
+  logoUrl: String!
 }
 
 input UpdateProduct {

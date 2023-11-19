@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/mhmmdFsl/my-online-petshop/pet-product/graph/model"
 )
@@ -40,7 +39,7 @@ func (r *mutationResolver) UpdateProduct(ctx context.Context, input *model.Updat
 
 // CreateShop is the resolver for the createShop field.
 func (r *mutationResolver) CreateShop(ctx context.Context, input *model.NewShop) (*model.Shop, error) {
-	panic(fmt.Errorf("not implemented: CreateShop - createShop"))
+	return r.ShopService.CreateShop(input)
 }
 
 // Products is the resolver for the products field.
@@ -54,7 +53,7 @@ func (r *queryResolver) Products(ctx context.Context, input *model.ProductFilter
 
 // Shops is the resolver for the shops field.
 func (r *queryResolver) Shops(ctx context.Context, input *model.ShopFilter) ([]*model.Shop, error) {
-	panic(fmt.Errorf("not implemented: Shops - shops"))
+	return r.ShopService.GetAll(input)
 }
 
 // Mutation returns MutationResolver implementation.

@@ -10,12 +10,9 @@ type NewProduct struct {
 }
 
 type NewShop struct {
-	Name      *string `json:"name,omitempty"`
-	UserID    *string `json:"userId,omitempty"`
-	LogoURL   *string `json:"logoUrl,omitempty"`
-	Status    *string `json:"status,omitempty"`
-	CreatedAt *string `json:"createdAt,omitempty"`
-	UpdatedAt *string `json:"updatedAt,omitempty"`
+	Name    string `json:"name"`
+	UserID  string `json:"userId"`
+	LogoURL string `json:"logoUrl"`
 }
 
 type Product struct {
@@ -38,9 +35,10 @@ type ProductFilter struct {
 
 type Shop struct {
 	ID         string   `json:"id"`
+	UserID     string   `json:"userId"`
 	Name       string   `json:"name"`
 	LogoURL    string   `json:"logoUrl"`
-	IsVerified *bool    `json:"isVerified,omitempty"`
+	IsVerified bool     `json:"isVerified"`
 	ProductID  []string `json:"productId,omitempty"`
 	Status     string   `json:"status"`
 	CreatedAt  string   `json:"createdAt"`
@@ -48,7 +46,9 @@ type Shop struct {
 }
 
 type ShopFilter struct {
-	Limit int `json:"limit"`
+	Name   *string `json:"name,omitempty"`
+	UserID *string `json:"userId,omitempty"`
+	Limit  int     `json:"limit"`
 }
 
 type UpdateProduct struct {

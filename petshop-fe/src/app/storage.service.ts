@@ -24,6 +24,14 @@ export class StorageService {
     window.sessionStorage.setItem(ACCESS, value);
   }
 
+  saveUserId(value: any): void {
+    window.sessionStorage.setItem('user_id', value);
+  }
+
+  getUserId(): any {
+    return window.sessionStorage.getItem('user_id');
+  }
+
   getAccessToken(): any {
     return window.sessionStorage.getItem(ACCESS);
   }
@@ -33,7 +41,7 @@ export class StorageService {
   }
 
   isLogin(): boolean {
-    const r = this.getRefreshToken()
+    const r = this.getRefreshToken();
     return !!r;
 
   }

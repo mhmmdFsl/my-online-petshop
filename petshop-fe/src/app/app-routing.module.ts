@@ -9,6 +9,7 @@ import { ShopDashboardComponent } from './shop-dashboard/shop-dashboard.componen
 import { AddProductComponent } from './add-product/add-product.component';
 import { ShopProductComponent } from './shop-product/shop-product.component';
 import { ShopComponent } from './shop/shop.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { 
@@ -35,7 +36,8 @@ const routes: Routes = [
       { path: '', component: ShopComponent},
       { path: 'product', component: ShopProductComponent},
       { path: 'add-product', component: AddProductComponent },
-    ] 
+    ],
+    // canActivate: [AuthGuard]
   },
 ];
 

@@ -8,18 +8,17 @@ import (
 	"log"
 )
 
-var Collecion *mongo.Collection
-
-func init() {
+func NewCollection(collenction string) *mongo.Collection {
 	log.Printf("connecting to mongo\n")
-	client, err :=  mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
 		log.Fatalf("failed connecting to mongo: %v\n", err.Error())
 	}
-	
+
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
 		log.Fatalf("failed ping mongodb: %v\n", err.Error())
 	}
-	Collecion = client.Database("product").Collection("pet_product")
+	c := client.Database("product").Collection(collenction)
 	log.Printf("connected to mongodb\n")
+	return c
 }

@@ -82,6 +82,7 @@ type ComplexityRoot struct {
 		ProductID  func(childComplexity int) int
 		Status     func(childComplexity int) int
 		UpdatedAt  func(childComplexity int) int
+		UserID     func(childComplexity int) int
 	}
 
 	_Service struct {
@@ -316,6 +317,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Shop.UpdatedAt(childComplexity), true
+
+	case "Shop.userId":
+		if e.complexity.Shop.UserID == nil {
+			break
+		}
+
+		return e.complexity.Shop.UserID(childComplexity), true
 
 	case "_Service.sdl":
 		if e.complexity._Service.SDL == nil {
@@ -892,6 +900,8 @@ func (ec *executionContext) fieldContext_Mutation_createShop(ctx context.Context
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Shop_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Shop_userId(ctx, field)
 			case "name":
 				return ec.fieldContext_Shop_name(ctx, field)
 			case "logoUrl":
@@ -1314,6 +1324,8 @@ func (ec *executionContext) fieldContext_Product_shop(ctx context.Context, field
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Shop_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Shop_userId(ctx, field)
 			case "name":
 				return ec.fieldContext_Shop_name(ctx, field)
 			case "logoUrl":
@@ -1451,6 +1463,8 @@ func (ec *executionContext) fieldContext_Query_shops(ctx context.Context, field 
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Shop_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Shop_userId(ctx, field)
 			case "name":
 				return ec.fieldContext_Shop_name(ctx, field)
 			case "logoUrl":
@@ -1704,6 +1718,50 @@ func (ec *executionContext) fieldContext_Shop_id(ctx context.Context, field grap
 	return fc, nil
 }
 
+func (ec *executionContext) _Shop_userId(ctx context.Context, field graphql.CollectedField, obj *model.Shop) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Shop_userId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UserID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Shop_userId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Shop",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Shop_name(ctx context.Context, field graphql.CollectedField, obj *model.Shop) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Shop_name(ctx, field)
 	if err != nil {
@@ -1813,11 +1871,14 @@ func (ec *executionContext) _Shop_isVerified(ctx context.Context, field graphql.
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*bool)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Shop_isVerified(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3883,7 +3944,7 @@ func (ec *executionContext) unmarshalInputNewShop(ctx context.Context, obj inter
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "userId", "logoUrl", "status", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"name", "userId", "logoUrl"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3894,7 +3955,7 @@ func (ec *executionContext) unmarshalInputNewShop(ctx context.Context, obj inter
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3903,7 +3964,7 @@ func (ec *executionContext) unmarshalInputNewShop(ctx context.Context, obj inter
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3912,38 +3973,11 @@ func (ec *executionContext) unmarshalInputNewShop(ctx context.Context, obj inter
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoUrl"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.LogoURL = data
-		case "status":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Status = data
-		case "createdAt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedAt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedAt"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
 		}
 	}
 
@@ -4008,13 +4042,31 @@ func (ec *executionContext) unmarshalInputShopFilter(ctx context.Context, obj in
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"limit"}
+	fieldsInOrder := [...]string{"name", "userId", "limit"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "userId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
 		case "limit":
 			var err error
 
@@ -4369,6 +4421,11 @@ func (ec *executionContext) _Shop(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "userId":
+			out.Values[i] = ec._Shop_userId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "name":
 			out.Values[i] = ec._Shop_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -4381,6 +4438,9 @@ func (ec *executionContext) _Shop(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "isVerified":
 			out.Values[i] = ec._Shop_isVerified(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "productId":
 			out.Values[i] = ec._Shop_productId(ctx, field, obj)
 		case "status":

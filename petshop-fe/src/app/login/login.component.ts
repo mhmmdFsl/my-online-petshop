@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit{
           console.log(n)
           this.storageService.saveAccessToken(n['data']['accessToken'])
           this.storageService.saveRefreshToken(n['data']['refreshToken'])
+          this.storageService.saveUserId(n['data']['user']['id']);
         },
         error: (e) => this.error = e['error']['message'],
         complete: () => this.router.navigate([''])

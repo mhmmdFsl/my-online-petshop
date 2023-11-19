@@ -22,6 +22,7 @@
     "apollo-angular": "^5.0.2",
     "graphql": "^16",
     "jquery": "^3.7.1",
+    "ngx-editor": "^16.0.1",
     "popper.js": "^1.16.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

@@ -20,12 +20,20 @@ func main() {
 		port = defaultPort
 	}
 
+	productCollection := config.NewCollection("pet_prodcut")
+	shopCollection := config.NewCollection("pet_shop")
+
 	productService := service.NewProductService(&service.ProductServiceCfg{
-		Collection: config.Collecion,
+		Collection: productCollection,
+	})
+
+	shopService := service.NewShopService(&service.ShopServiceCfg{
+		Collection: shopCollection,
 	})
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		ProductService: productService,
+		ShopService:    shopService,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
