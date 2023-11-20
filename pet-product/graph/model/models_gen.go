@@ -7,6 +7,7 @@ type NewProduct struct {
 	Price       int    `json:"price"`
 	ImageURL    string `json:"imageUrl"`
 	Description string `json:"description"`
+	ShopID      string `json:"shopId"`
 }
 
 type NewShop struct {

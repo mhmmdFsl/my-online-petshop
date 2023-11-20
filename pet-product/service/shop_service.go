@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"time"
+
 	"github.com/dgryski/trifles/uuid"
 	"github.com/mhmmdFsl/my-online-petshop/pet-product/graph/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 type ShopService interface {
@@ -85,7 +86,8 @@ func (s shopServiceImpl) CreateShop(i *model.NewShop) (*model.Shop, error) {
 }
 
 type ShopServiceCfg struct {
-	Collection *mongo.Collection
+	Collection     *mongo.Collection
+	ShopCollection *mongo.Collection
 }
 
 func NewShopService(cfg *ShopServiceCfg) ShopService {

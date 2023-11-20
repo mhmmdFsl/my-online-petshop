@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/mhmmdFsl/my-online-petshop/pet-product/config"
-	"github.com/mhmmdFsl/my-online-petshop/pet-product/service"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/mhmmdFsl/my-online-petshop/pet-product/config"
+	"github.com/mhmmdFsl/my-online-petshop/pet-product/service"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -24,7 +25,8 @@ func main() {
 	shopCollection := config.NewCollection("pet_shop")
 
 	productService := service.NewProductService(&service.ProductServiceCfg{
-		Collection: productCollection,
+		Collection:     productCollection,
+		ShopCollection: shopCollection,
 	})
 
 	shopService := service.NewShopService(&service.ShopServiceCfg{

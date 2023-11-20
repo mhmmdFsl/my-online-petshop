@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Apollo, QueryRef} from "apollo-angular";
 import {gql} from "@apollo/client/core";
 import { CreateShopRq } from './create-shop-rq.interface';
+import { createProductRq } from './create-product-rq.interface';
 
 const GET_PRODDUCT_QUERY = gql`
   query Query($input: ProductFilter) {
@@ -19,16 +20,31 @@ const GET_PRODDUCT_QUERY = gql`
   `
 
   const GET_SHOP_QUERY = gql`
-  query Query($input: ShopFilter) {
-      shops(input: $input) {
+    query Query($input: ShopFilter) {
+        shops(input: $input) {
+          id
+          userId
+          name
+          logoUrl
+          isVerified
+          status
+          createdAt
+          updatedAt
+        }
+    }
+  `
+
+  const CREATE_PRODUCT_QUERY = gql`
+    mutation CreateProduct($input: NewProduct!) {
+      createProduct(input: $input) {
         id
-        userId
         name
-        logoUrl
-        isVerified
-        status
-        createdAt
+        price
+        slug
         updatedAt
+        imageUrl
+        description
+        createdAt
       }
     }
   `
@@ -102,6 +118,23 @@ export class ProductService {
         }
       }
     })
+  }
+
+  createProduct(createProductRq: createProductRq) {
+    return this.apollo
+      .mutate({
+        mutation: CREATE_PRODUCT_QUERY,
+        variables: {
+          input: {
+            name: createProductRq.name,
+            price: createProductRq.price,
+            imageUrl: createProductRq.imageUrl,
+            description: createProductRq.description,
+            shopId: createProductRq.shopID,
+          }
+        }
+      })
+
   }
 
   createShop(createShopRq: CreateShopRq) {

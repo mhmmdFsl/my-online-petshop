@@ -29,6 +29,10 @@ export class ShopComponent implements OnInit{
       .valueChanges.subscribe((rs: any) => {
         const shops = rs['data']['shops'] as [Shop]
         this.shop = shops[0]
+        if(this.shop?.id) {
+          console.log(`set shopId to ${this.shop.id}`)
+          this.storageService.setShopId(this.shop.id)
+        }
       });
   }
 

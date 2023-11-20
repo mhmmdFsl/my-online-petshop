@@ -46,6 +46,7 @@ input NewProduct {
   price: Int!
   imageUrl: String!
   description: String!
+  shopId: ID!
 }
 
 input ProductFilter {

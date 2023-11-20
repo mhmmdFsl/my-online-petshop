@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
-const REFRESH = 'refresh_token'
-const ACCESS = 'access_token'
+const REFRESH = 'refresh_token';
+const ACCESS = 'access_token';
+const SHOP_ID = 'shop_id';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
+
+  private shopId: string = '';
 
   constructor() { }
 
@@ -44,5 +48,13 @@ export class StorageService {
     const r = this.getRefreshToken();
     return !!r;
 
+  }
+
+  setShopId(id: string) {
+   window.sessionStorage.setItem(SHOP_ID, id);
+  }
+
+  getShopId(): string {
+    return window.sessionStorage.getItem(SHOP_ID) as string;
   }
 }

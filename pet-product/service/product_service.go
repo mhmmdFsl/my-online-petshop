@@ -2,14 +2,15 @@ package service
 
 import (
 	"context"
+	"strings"
+	"time"
+
 	"github.com/dgryski/trifles/uuid"
 	"github.com/mhmmdFsl/my-online-petshop/pet-product/graph/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"strings"
-	"time"
 )
 
 type ProductService interface {
@@ -20,12 +21,13 @@ type ProductService interface {
 }
 
 type productServiceImpl struct {
-	Collection *mongo.Collection
+	Collection     *mongo.Collection
+	ShopCollection *mongo.Collection
 }
 
 func (p productServiceImpl) UpdateProduct(up *model.UpdateProduct) (*model.Product, error) {
 	filter := bson.D{
-		{"id", up.ID},
+		{Key: "id", Value: up.ID},
 	}
 	var product *model.Product
 	err := p.Collection.FindOne(context.TODO(), filter).Decode(&product)
@@ -60,7 +62,7 @@ func (p productServiceImpl) UpdateProduct(up *model.UpdateProduct) (*model.Produ
 }
 
 func (p productServiceImpl) Delete(id string) (string, error) {
-	_, err := p.Collection.DeleteOne(context.TODO(), bson.D{{"id", id}})
+	_, err := p.Collection.DeleteOne(context.TODO(), bson.D{{Key: "id", Value: id}})
 	if err != nil {
 		return "", err
 	}
@@ -104,17 +106,35 @@ func (p productServiceImpl) GetAll(i *model.ProductFilter) ([]*model.Product, er
 
 func (p productServiceImpl) Create(m *model.NewProduct) (*model.Product, error) {
 	product := model.Product{
-		ID:        uuid.UUIDv4(),
-		Name:      m.Name,
-		Price:     m.Price,
-		ImageURL:  m.ImageURL,
-		Slug: strings.ReplaceAll(strings.ToLower(m.Name), " ", "-"),
+		ID:          uuid.UUIDv4(),
+		Name:        m.Name,
+		Price:       m.Price,
+		ImageURL:    m.ImageURL,
+		Slug:        strings.ReplaceAll(strings.ToLower(m.Name), " ", "-"),
 		Description: m.Description,
-		CreatedAt: time.Now().Format(time.RFC3339Nano),
-		UpdatedAt: time.Now().Format(time.RFC3339Nano),
+		CreatedAt:   time.Now().Format(time.RFC3339Nano),
+		UpdatedAt:   time.Now().Format(time.RFC3339Nano),
 	}
-
+	shopFilter := bson.M{"id": m.ShopID}
+	shopRs := p.ShopCollection.FindOne(context.TODO(), shopFilter)
+	if err := shopRs.Err(); err != nil {
+		return nil, err
+	}
 	_, err := p.Collection.InsertOne(context.TODO(), product)
+	if err != nil {
+		return nil, err
+	}
+	var shop model.Shop
+	err = shopRs.Decode(&shop)
+	if err != nil {
+		return nil, err
+	}
+	shopUpdate := bson.M{
+		"$push": bson.M{
+			"productid": product.ID,
+		},
+	}
+	_, err = p.ShopCollection.UpdateOne(context.TODO(), shopFilter, shopUpdate)
 	if err != nil {
 		return nil, err
 	}
@@ -122,11 +142,13 @@ func (p productServiceImpl) Create(m *model.NewProduct) (*model.Product, error) 
 }
 
 type ProductServiceCfg struct {
-	Collection *mongo.Collection
+	Collection     *mongo.Collection
+	ShopCollection *mongo.Collection
 }
 
 func NewProductService(c *ProductServiceCfg) ProductService {
 	return &productServiceImpl{
-		Collection: c.Collection,
+		Collection:     c.Collection,
+		ShopCollection: c.ShopCollection,
 	}
 }
